@@ -1,4 +1,3 @@
-
 namespace UnitTestProject1
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,12 +15,12 @@ namespace UnitTestProject1
     using Microsoft.Azure.CosmosDB.BulkExecutor;
     using Microsoft.Azure.CosmosDB.BulkExecutor.BulkImport;
     using MigrationExecutorFunctionApp;
+    using MigrationExecutorUnitTests;
 
     [TestClass]
     public class UnitTests
     {
         private static IConfigurationRoot configuration = new ConfigurationBuilder()
-
                 .SetBasePath(Environment.CurrentDirectory)
                 .AddJsonFile("AppSettings.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables()
@@ -49,10 +48,12 @@ namespace UnitTestProject1
             List<Document> fakeBadDocsBatch = new List<Document>();
             Document doc = new Document();
             doc.Id = "0f4adabc-d461-495f-bdd3-4f8877ae7f3f";
+
             for (int i = 0; i < 10; i++)
             {
                 fakeBadDocsBatch.Add(doc);
             }
+
             ReadOnlyCollection<Document> readOnlyDocs = fakeBadDocsBatch.AsReadOnly();
 
             mockBulkExecutor.Setup(bulkExecutorFake => bulkExecutorFake.InitializeAsync())
@@ -67,16 +68,22 @@ namespace UnitTestProject1
             DocumentFeedMigrator migrator = new DocumentFeedMigrator(mockBulkExecutor.Object);
             await migrator.Run(postMortemQueue, readOnlyDocs, mockLog.Object);
           
-
             Assert.AreEqual(postMortemQueue.Count(), 10);
-            mockBulkExecutor.Verify(bulkExecutorFake => bulkExecutorFake.BulkImportAsync(It.IsAny<ReadOnlyCollection<Document>>(), true, true, null, It.IsAny<int>(), It.IsAny<CancellationToken>()), Times.Exactly(1));
-
+            mockBulkExecutor.Verify(
+                bulkExecutorFake => 
+            bulkExecutorFake.BulkImportAsync(
+                It.IsAny<ReadOnlyCollection<Document>>(),
+                true,
+                true,
+                null,
+                It.IsAny<int>(),
+                It.IsAny<CancellationToken>()),
+                Times.Exactly(1));
         }
 
         [TestMethod]
         public async Task TestIfQueueTriggerUpsertsDocs()
         {
-
             Mock<IDocumentClient> mockClient = new Mock<IDocumentClient>();
             Mock<ILogger> fakeLog = new Mock<ILogger>();
 
@@ -94,10 +101,6 @@ namespace UnitTestProject1
             await postMortemFunction.Run(mockClient.Object, doc, fakeLog.Object);
 
             Assert.AreEqual(callTimesUpsert, 1);
-            
         }
-
-
     }
-   
 }

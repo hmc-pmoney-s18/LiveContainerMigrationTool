@@ -1,7 +1,3 @@
-///<summary>
-/// Creates an azure function that listens to changes in one collection
-/// and copy those changes in a target collection
-/// </summary>
 namespace MigrationExecutorFunctionApp
 {
     using System;
@@ -17,9 +13,9 @@ namespace MigrationExecutorFunctionApp
     public class DocumentFeedMigrator
     {
         private IBulkExecutor bulkExecutor;
+
         public DocumentFeedMigrator(IBulkExecutor bulkExecutor)
         {
-
             this.bulkExecutor = bulkExecutor;
         }
 
@@ -33,14 +29,12 @@ namespace MigrationExecutorFunctionApp
             LeaseCollectionName = "leases",
             StartFromBeginning = true,
             MaxItemsPerInvocation = 10000000,
-            CreateLeaseCollectionIfNotExists = true
-            )]IReadOnlyList<Document> documents,
+            CreateLeaseCollectionIfNotExists = true)
+            ]IReadOnlyList<Document> documents,
             ILogger log)
         {
             if (documents != null && documents.Count > 0 && bulkExecutor != null)
             {
-
-
                 BulkImportResponse bulkImportResponse = null;
 
                 CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
@@ -67,7 +61,6 @@ namespace MigrationExecutorFunctionApp
                     {
                         log.LogError("Exception: {0}", e);
                     }
-
 
                     if (bulkImportResponse.BadInputDocuments != null && bulkImportResponse.BadInputDocuments.Count > 0)
                     {

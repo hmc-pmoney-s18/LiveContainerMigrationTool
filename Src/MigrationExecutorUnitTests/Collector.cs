@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 
-namespace UnitTestProject1
+namespace MigrationExecutorUnitTests
 {
     public class Collector<T> : ICollector<T>
     {
@@ -23,9 +23,7 @@ namespace UnitTestProject1
 
         public Task FlushAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-
             return Task.FromResult(true);
-
         }
 
         public T GetElement(int i)

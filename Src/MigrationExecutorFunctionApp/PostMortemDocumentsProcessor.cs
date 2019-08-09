@@ -1,8 +1,4 @@
-/// <summary>
-/// Listens to the post mortem queue and tries to
-/// re-insert the elements in the queue back in the
-/// cosmos db target collection
-/// </summary>
+
 namespace MigrationExecutorFunctionApp
 {
     using System;
@@ -13,6 +9,7 @@ namespace MigrationExecutorFunctionApp
     public class PostMortemDocumentsProcessor
     {
         private Uri targetContainerLink;
+
         public PostMortemDocumentsProcessor(Uri targetContainerLink)
         {
             this.targetContainerLink = targetContainerLink;
@@ -21,19 +18,17 @@ namespace MigrationExecutorFunctionApp
         [FunctionName("Function2")]
         public async Task Run(
             [CosmosDB("%TargetDatabase%", "%TargetCollection%", ConnectionStringSetting = "CosmosDB")]IDocumentClient client,
-            [QueueTrigger("%QueueName%", Connection = "QueueConnectionString")]Document myQueueItem, ILogger log)
+            [QueueTrigger("%QueueName%", Connection = "QueueConnectionString")]Document myQueueItem, 
+            ILogger log)
         {
-
             try
             {
-                await client.UpsertDocumentAsync(targetContainerLink, myQueueItem);
-
+                await client.UpsertDocumentAsync(this.targetContainerLink, myQueueItem);
             }
             catch (DocumentClientException e)
             {
                 log.LogError(e, e.Message);
             }
-
         }
     }
 }

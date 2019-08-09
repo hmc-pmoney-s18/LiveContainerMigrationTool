@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace UnitTestProject1
+namespace MigrationExecutorUnitTests
 {
     public static class Utilities
     {

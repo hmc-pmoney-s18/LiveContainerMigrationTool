@@ -1,5 +1,4 @@
-﻿
-namespace UnitTestProject1
+﻿namespace MigrationExecutorUnitTests
 {
     using Newtonsoft.Json;
 
