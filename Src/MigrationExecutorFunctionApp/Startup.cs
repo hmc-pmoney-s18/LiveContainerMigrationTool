@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.Azure.CosmosDB.BulkExecutor;
+using Microsoft.Azure.Documents;
+using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Azure.Documents;
-using Microsoft.Azure.Documents.Client;
-using Microsoft.Azure.CosmosDB.BulkExecutor;
+
 [assembly: FunctionsStartup(typeof(MigrationExecutorFunctionApp.Startup))]
 
 namespace MigrationExecutorFunctionApp
@@ -16,7 +17,6 @@ namespace MigrationExecutorFunctionApp
         {
             string endPoint = Environment.GetEnvironmentVariable($"{"endPoint"}");
             string authKey = Environment.GetEnvironmentVariable($"{"authKey"}");
-
 
             string database = Environment.GetEnvironmentVariable($"{"targetDatabase"}");
             string collection = Environment.GetEnvironmentVariable($"{"targetCollection"}");
@@ -77,7 +77,5 @@ namespace MigrationExecutorFunctionApp
 
             return bulkExecutor;
         }
-
-
     }
 }
