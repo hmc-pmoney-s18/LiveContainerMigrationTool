@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
-
-namespace MigrationExecutorUnitTests
+﻿namespace MigrationExecutorUnitTests
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Azure.WebJobs;
+
     public class Collector<T> : ICollector<T>
     {
         public readonly List<T> Items = new List<T>();
 
         public void Add(T item)
         {
-            Items.Add(item);
+            this.Items.Add(item);
         }
 
         public int Count()
@@ -21,23 +18,16 @@ namespace MigrationExecutorUnitTests
             return this.Items.Count;
         }
 
-        public Task FlushAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return Task.FromResult(true);
-        }
-
         public T GetElement(int i)
         {
-            if(this.Items.Count > i && i >= 0)
+            if (this.Items.Count > i && i >= 0)
             {
                 return this.Items[i];
             }
-
             else
             {
                 throw new ArgumentException("Index out of range");
             }
         }
-
     }
 }

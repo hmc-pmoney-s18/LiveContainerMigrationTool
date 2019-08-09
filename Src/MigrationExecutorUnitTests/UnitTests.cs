@@ -1,21 +1,21 @@
 namespace UnitTestProject1
-{
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
-    using Microsoft.Azure.Documents;
-    using Microsoft.Azure.Documents.Client;
-    using System.Collections.Generic;
-    using System.Threading;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Logging;
+{ 
     using System;
-    using System.Linq;
-    using System.Threading.Tasks;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
     using Microsoft.Azure.CosmosDB.BulkExecutor;
     using Microsoft.Azure.CosmosDB.BulkExecutor.BulkImport;
+    using Microsoft.Azure.Documents;
+    using Microsoft.Azure.Documents.Client;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Logging;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using MigrationExecutorFunctionApp;
     using MigrationExecutorUnitTests;
+    using Moq;
 
     [TestClass]
     public class UnitTests

@@ -33,7 +33,7 @@ namespace MigrationExecutorFunctionApp
             ]IReadOnlyList<Document> documents,
             ILogger log)
         {
-            if (documents != null && documents.Count > 0 && bulkExecutor != null)
+            if (documents != null && documents.Count > 0)
             {
                 BulkImportResponse bulkImportResponse = null;
 

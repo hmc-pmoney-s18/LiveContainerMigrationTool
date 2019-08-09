@@ -28,7 +28,6 @@
 
         [JsonProperty(PropertyName = "item")]
         public string Item { get; set; }
-
     }
 }
 

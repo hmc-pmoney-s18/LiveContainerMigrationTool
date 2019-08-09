@@ -47,7 +47,7 @@ namespace MigrationExecutorFunctionApp
                 authKey,
                 new ConnectionPolicy()
                 {
-                    ConnectionMode = Microsoft.Azure.Documents.Client.ConnectionMode.Direct,
+                    ConnectionMode = ConnectionMode.Direct,
                     ConnectionProtocol = Protocol.Tcp,
                     RetryOptions = new RetryOptions()
                     {
