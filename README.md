@@ -2,7 +2,7 @@
 ==========================================
 
 The Azure Cosmos DB Live Container Migration tool for .NET Core migrates documents from a Monitored Container to a Target Container in real-time. The tool copies data to the Target Container as It comes in the Monitored Container using [Azure Cosmos DB ChangeFeed](https://docs.microsoft.com/en-us/azure/cosmos-db/change-feed). The tool also leverages [Azure Cosmos DB Bulk Executor Library](https://docs.microsoft.com/en-us/azure/cosmos-db/bulk-executor-overview)
-to achieve a high write throughput in case of huge data migration scenarios and [Azure Functions](https://azure.microsoft.com/en-us/services/functions/) for deployment. The tool migrates data since the beginning of time with respect to the Monitored container. As a result, the Target Container is guaranted to have all the documents that are in the Monitored container once migration is done barring any write erros.
+to achieve a high write throughput in case of huge data migration scenarios and [Azure Functions](https://azure.microsoft.com/en-us/services/functions/) for deployment. The tool migrates data since the beginning of time with respect to the Monitored container. As a result, the Target Container is guaranted to have all the documents that are in the Monitored container once migration is done barring any erros.
 
 <summary><strong><em>Table of Contents</em></strong></summary>
 
@@ -24,16 +24,16 @@ This repository includes a project that executes the migration, a migration prog
 To get started with migration, make sure you have the Target Container created. We don't check if the Monitored or Target container exists, so a wrong container id would lead to an 
 undefined behavior.
 
-To get started, clone the repository. In the meantime, make sure you have an Azure Function Instance created with an Application Insights hosting plan.
+To get started, clone the repository. In the meantime, make sure you have an Azure Function Instance created with an App Service Plan hosting plan.
 The bulk executor that the tool uses to optimize write throuput leverages concurrent writing within a partition key range so a machine with more than one core is 
-required. Since, Consumption hosting plan does not scale up, we require customers to deploy this in a Azure Function Instance in Application Insights hosting plan.
+required. Since, Consumption hosting plan does not scale up, we require customers to deploy this tool in a Azure Function Instance in App Service Plan hosting plan.
 
-For a better migration performace, make sure your Azure Function Instance is as close to your Target and Monitored containers regions. 
+For a better migration performace, make sure your Azure Function Instance is as close to your Target and Monitored containers regions as possible. 
 
 ### Configuring Migration Parameters
 
 Once you  have created an Azure Function Instance, head to the *Configuration* option to configure migration settings. Migration settings include connection strings to your monitored and target containers,
-monitored container's id and database, target container's id and database, and storage queue name and connection string, which you have to create before hand. A storage queue is used as a post-mortem storage service in case a document write fails.
+monitored container's id and database, target container's id and database, and storage queue name and connection string, **which you have to create before hand**. A storage queue is used as a post-mortem storage service in case a document write fails.
 The migration settings are exposed as environment variables and accessed by the migration application during runtime. You can learn more about Azure Function Instance configuration [here](https://docs.microsoft.com/en-us/azure/app-service/configure-common).
 
 ![template](./images/azureFunctionFive)
@@ -45,26 +45,24 @@ The migration settings are exposed as environment variables and accessed by the 
 * *SourceCollection* : The name of your Monitored Container.
 * *EndPoint* : The endpoint to your Azure Cosmos DB Database account that contains your *Target Container*.
 * *AuthKey* : The key to your Azure Cosmos DB Database account that contains your *Target Container*
-* *TargetDatabase* : The name of the database that contains your Monitored Container.
-* *TargetCollection* : The name of your Monitored Container.
-* *QueueName* : The cancellation token to gracefully exit bulk import.
-* *QueueConnectionString* : The cancellation token to gracefully exit bulk import.
-* *TargetDatabase* : The name of the database that contains your Monitored Container.
-* *TargetCollection* : The name of your Monitored Container.
+* *TargetDatabase* : The name of the database that contains your Target Container.
+* *TargetCollection* : The name of your Target Container.
+* *QueueName* : The name of the storage queue.
+* *QueueConnectionString* : The connection string to the storage queue.
 
-After naving to the Application Settings blade, click **New Application Settings** and add each of the above configurable settings with their appropriate value
+After naving to the Application Settings blade, click **New Application Settings** and add each of the above configurable settings with their appropriate values
 ![template](./images/azureFunctionSix)
 
-After adding every configurable setting with the right values, your Application Settings blade should very similar to the image below
+After adding every configurable setting with the right values, your Application Settings blade should be very similar to the image below
 
 ![template](./images/azureFunctionThree)
 
 ### Hosting platform instanse configuration
 
 This Azure Cosmos DB Live Migration tool uses Azure Cosmos DB BulkExecutor library. According to Azure Cosmos DB BulkExecutor library documentation, "when a bulk import API is triggered with a batch of documents[to be migrated], on the client-side[in the Azure Function Environment in this case], they are first shuffled into buckets corresponding to their target Cosmos DB partition key range. Within each partiton key range bucket, they are broken down into mini-batches and each mini-batch of documents acts as a payload that is committed transactionally.
-We have built in optimizations for the concurrent execution of these mini-batches both within and across partition key ranges to maximally utilize the allocated collection throughput." Since this migration tool leverages Azure Cosmos DB BulkExecutor concurrent execution of documents mini-batches for a better migration performance, it is importance this tool is deployed in an environment of more than one core.
+We have built in optimizations for the concurrent execution of these mini-batches both within and across partition key ranges to maximally utilize the allocated collection throughput." Since this migration tool leverages Azure Cosmos DB BulkExecutor concurrent execution of documents mini-batches for a better migration performance, it is important this tool is deployed in an environment with more than one core.
 
-In order to scale up and choose an architure that allows the tool to perform optimally, navigate to your Azure Function App Instance and click **Platform features** > **Scale Up**
+In order to scale up and allow the tool to perform optimally, navigate to your Azure Function App Instance and click **Platform features** > **Scale Up**
 
 ![template](./images/azureFunctionEight)
 
@@ -93,28 +91,27 @@ Once all of these is done, make sure to start your function app when you are rea
 Let us compare the performace of the bulk import sample [application](https://github.com/Azure/azure-cosmosdb-bulkexecutor-dotnet-getting-started/blob/master/BulkImportSample/BulkImportSample/) against a [multi-threaded application](https://github.com/Azure/azure-documentdb-dotnet/tree/master/samples/documentdb-benchmark) which utilizes point writes (CreateDocumentAsync API in DocumentClient)
 
 The tool is run on Azure Function Instance in S3 400 ACU 7 GB memory pricing tier in Central US region, migrating data from a Monitored Container in Central US to a Target Container in Central US with 30K RU/s.
-. 
 
 One important thing to point out is that as you might have guessed, the RU/s you provision on the Target Container influences how fast the tool can write ceteris paribus, whereas the RU/s provisioned on the 
 monitored container influences how fast the tool can read the Monitored Container's changefeed. 
 
-We observe the following performance for the migration of 6.09 million (~1KB) documents from the 400 RU/s **three uneven partitions** Monitored Container into a 30 K RU/s Cosmos DB Target Container. The Monitored Container has a different partition key than the Target Container:
+We observe the following performance for the migration of 6.09 million (~1KB) documents from the 400 RU/s **three uneven partitions** Monitored Container into a 30K RU/s Cosmos DB Target Container. The Monitored Container has a different partition key than the Target Container:
 
 | | Time taken (min) | Average Writes/second |
-| --- | --- | --- | --- |
-|  | 28.5 | 3502 |
+| --- | --- | --- |
+|  Performance | 28.5 | 3502 |
 
 We observe the following performance for the migration of 6.09 million (~1KB) documents from the 400 RU/s **three uneven partitions** Monitored Container into a 30 K RU/s Cosmos DB Target Container. The Monitored container has the same partition key as the Target Container:
 
 | | Time taken (min) | Average Writes/second |
-| --- | --- | --- | --- |
-|  | 42 |  | ~ 2400
+| --- | --- | --- |
+| Performance | 42 |  | ~ 2400
 
 We also observe the following performance for the migration of 2.72 million (~1KB) documents from a 400 RU/s **one partition** Monitored Container into a 30 K RU/s Cosmos DB Target Container. The Monitored container has the same partition key as the Target Container:
 
 | | Time taken (min) | Average Writes/second |
-| --- | --- | --- | --- |
-|  | ~ 25 |  | ~ 1780
+| --- | --- | --- |
+|  Performance | ~ 25 |  | ~ 1780
 
 The tool works better when data is evenly distrubuted across partitions because there are no threads creating a bottleneck still writing from their heavier payloads while others are just sitting around doing nothing because their mini - batches are not as heavy. We also see a better performance when the Monitored container has a different partition key than the Target container since the Bulk Executor library can read batch from one partition key range from the change feed but write it to several partitions in the Target Container concurrently.
 
