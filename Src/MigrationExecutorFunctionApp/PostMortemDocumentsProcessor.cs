@@ -1,3 +1,7 @@
+//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.  All rights reserved.
+//------------------------------------------------------------
+
 namespace MigrationExecutorFunctionApp
 {
     using System;
@@ -15,7 +19,7 @@ namespace MigrationExecutorFunctionApp
             this.targetContainerLink = targetContainerLink;
         }
          
-        [FunctionName("Function2")]
+        [FunctionName("PostMortemDocumentsProcessor")]
         public async Task Run(
             [CosmosDB("%TargetDatabase%", "%TargetCollection%", ConnectionStringSetting = "CosmosDB")]IDocumentClient client,
             [QueueTrigger("%QueueName%", Connection = "QueueConnectionString")]Document myQueueItem, 

@@ -1,3 +1,7 @@
+//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.  All rights reserved.
+//------------------------------------------------------------
+
 namespace UnitTestProject1
 { 
     using System;
@@ -32,7 +36,7 @@ namespace UnitTestProject1
             Mock<IBulkExecutor> mockBulkExecutor = new Mock<IBulkExecutor>();
             Mock<ILogger> mockLog = new Mock<ILogger>();
           
-            Collector<Document> postMortemQueue = new Collector<Document>();
+            AsyncCollector<Document> postMortemCol = new AsyncCollector<Document>();
 
             DocumentClient client = new DocumentClient(new Uri(configuration["EndPoint"]), configuration["AuthKey"]);
 
@@ -66,9 +70,10 @@ namespace UnitTestProject1
                 .Callback(() => bulkImportResponse.BadInputDocuments.AddRange(fakeBadDocsBatch));
 
             DocumentFeedMigrator migrator = new DocumentFeedMigrator(mockBulkExecutor.Object);
-            await migrator.Run(postMortemQueue, readOnlyDocs, mockLog.Object);
+            await migrator.Run(postMortemCol, readOnlyDocs, mockLog.Object);
           
-            Assert.AreEqual(postMortemQueue.Count(), 10);
+            Assert.AreEqual(postMortemCol.Count(), 10);
+
             mockBulkExecutor.Verify(
                 bulkExecutorFake => 
             bulkExecutorFake.BulkImportAsync(

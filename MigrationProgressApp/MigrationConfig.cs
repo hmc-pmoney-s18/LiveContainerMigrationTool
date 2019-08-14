@@ -1,14 +1,33 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.  All rights reserved.
+//------------------------------------------------------------
 
 namespace MigrationProgressApp
 {
+    using Newtonsoft.Json;
+
     public class MigrationConfig
     {
+        public MigrationConfig(
+            string monitoredUri, 
+            string monitoredSecretKey, 
+            string monitoredDbName, 
+            string monitoredCollectionName,
+            string destUri, 
+            string destKey, 
+            string destDbName, 
+            string destCollectionName)
+        {
+            this.MonitoredUri = monitoredUri;
+            this.MonitoredSecretKey = monitoredSecretKey;
+            this.MonitoredDbName = monitoredDbName;
+            this.MonitoredCollectionName = monitoredCollectionName;
+            this.DestUri = destUri;
+            this.DestSecretKey = destKey;
+            this.DestDbName = destDbName;
+            this.DestCollectionName = destCollectionName;
+        }
+
         [JsonProperty("monitoredUri")]
         public string MonitoredUri { get; set; }
 
@@ -31,20 +50,5 @@ namespace MigrationProgressApp
 
         [JsonProperty("destCollectionName")]
         public string DestCollectionName { get; set; }
-
-        public MigrationConfig(string MonitoredUri, string MonitoredSecretKey, string MonitoredDbName, string MonitoredCollectionName,
-            string DestUri, string DestKey, string DestDbName, string DestCollectionName)
-        {
-            this.MonitoredUri = MonitoredUri;
-            this.MonitoredSecretKey = MonitoredSecretKey;
-            this.MonitoredDbName = MonitoredDbName;
-            this.MonitoredCollectionName = MonitoredCollectionName;
-            this.DestUri = DestUri;
-            this.DestSecretKey = DestKey;
-            this.DestDbName = DestDbName;
-            this.DestCollectionName = DestCollectionName;
-        }
-      
     }
-    
 }

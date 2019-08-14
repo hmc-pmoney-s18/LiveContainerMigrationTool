@@ -1,3 +1,7 @@
+//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.  All rights reserved.
+//------------------------------------------------------------
+
 namespace MigrationExecutorFunctionApp
 {
     using System;
@@ -19,9 +23,9 @@ namespace MigrationExecutorFunctionApp
             this.bulkExecutor = bulkExecutor;
         }
 
-        [FunctionName("Function1")]
+        [FunctionName("DocumentFeedMigrator")]
         public async Task Run(
-            [Queue("%QueueName%", Connection = "QueueConnectionString")]ICollector<Document> postMortemQueue,
+            [Queue("%QueueName%", Connection = "QueueConnectionString")]IAsyncCollector<Document> postMortemQueue,
             [CosmosDBTrigger(
             databaseName: "%SourceDatabase%",
             collectionName: "%SourceCollection%",
@@ -66,7 +70,7 @@ namespace MigrationExecutorFunctionApp
                     {
                         foreach (Document doc in bulkImportResponse.BadInputDocuments)
                         {
-                            postMortemQueue.Add(doc);
+                            await postMortemQueue.AddAsync(doc);
                             log.LogInformation("Document added to the post-mortem queue: {0}", doc.Id);
                         }
                     }

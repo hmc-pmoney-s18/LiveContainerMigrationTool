@@ -1,4 +1,8 @@
-﻿namespace MigrationExecutorUnitTests
+﻿//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.  All rights reserved.
+//------------------------------------------------------------
+
+namespace MigrationExecutorUnitTests
 {
     using Newtonsoft.Json;
 

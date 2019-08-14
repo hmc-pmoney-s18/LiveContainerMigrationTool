@@ -1,4 +1,8 @@
-﻿using System;
+﻿//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.  All rights reserved.
+//------------------------------------------------------------
+
+using System;
 using System.Linq;
 using Microsoft.Azure.CosmosDB.BulkExecutor;
 using Microsoft.Azure.Documents;
@@ -6,20 +10,20 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 [assembly: FunctionsStartup(typeof(MigrationExecutorFunctionApp.Startup))]
 
 namespace MigrationExecutorFunctionApp
 {
+ 
     public class Startup : FunctionsStartup
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            string endPoint = Environment.GetEnvironmentVariable($"{"endPoint"}");
-            string authKey = Environment.GetEnvironmentVariable($"{"authKey"}");
+            string endPoint = Environment.GetEnvironmentVariable($"{"EndPoint"}");
+            string authKey = Environment.GetEnvironmentVariable($"{"AuthKey"}");
 
-            string database = Environment.GetEnvironmentVariable($"{"targetDatabase"}");
-            string collection = Environment.GetEnvironmentVariable($"{"targetCollection"}");
+            string database = Environment.GetEnvironmentVariable($"{"TargetDatabase"}");
+            string collection = Environment.GetEnvironmentVariable($"{"TargetCollection"}");
 
             Uri targetContainerUri = UriFactory.CreateDocumentCollectionUri(database, collection);
 
