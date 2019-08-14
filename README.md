@@ -103,9 +103,9 @@ We observe the following performance for the migration of 6.09 million (~1KB) do
 
 We observe the following performance for the migration of 6.09 million (~1KB) documents from the 400 RU/s **three uneven partitions** Monitored Container into a 30 K RU/s Cosmos DB Target Container. The Monitored container has the same partition key as the Target Container:
 
-| | Time taken (min) | Average Writes/second |
-| --- | --- | --- |
-| Performance | 42 |  | ~ 2400
+|               | Time taken (min)  | Average Writes/second |
+| -----------   | ----------------  | --------------------  |
+| Performance   | 42                | ~ 2400                |
 
 We also observe the following performance for the migration of 2.72 million (~1KB) documents from a 400 RU/s **one partition** Monitored Container into a 30 K RU/s Cosmos DB Target Container. The Monitored container has the same partition key as the Target Container:
 
