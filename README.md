@@ -50,11 +50,11 @@ The migration settings are exposed as environment variables and accessed by the 
 * *QueueConnectionString* : The connection string to the storage queue.
 
 After naving to the Application Settings blade, click **New Application Settings** and add each of the above configurable settings with their appropriate values
-![template](./images/azureFunctionSix)
+![template](/Images/azureFunctionSix.png)
 
 After adding every configurable setting with the right values, your Application Settings blade should be very similar to the image below
 
-![template](./images/azureFunctionThree)
+![template](/Images/azureFunctionThree.png)
 
 ### Hosting platform instanse configuration
 
@@ -63,11 +63,11 @@ We have built in optimizations for the concurrent execution of these mini-batche
 
 In order to scale up and allow the tool to perform optimally, navigate to your Azure Function App Instance and click **Platform features** > **Scale Up**
 
-![template](./images/azureFunctionEight)
+![template](/Images/azureFunctionEight.png)
 
 We recommend you to choose **S3 400 ACU** pricing tier. For more information about other pricing tiers and how they satisfty various performance needs, click [here](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/acu).
 
-![template](./images/azureFunctionSeven)
+![template](/Images/azureFunctionSeven.png)
 
 Once you have configured Migration Application settings and the Hosting platform, you can publish the MigrationExecutorApp from the cloned repository in Azure Function Instance. If you don't want the migration to start right away, you can stop the Azure Function Instance, deploy the code from visual studio, and start the Azure Function Instance whenever you want.
 
@@ -79,7 +79,7 @@ Right click on the **MigrationExecutorApp** project, then click on **Publish**.
 The rest of the steps should be straight forward and very intuitive since you have already created an Azure Function Instance that lives within some
 specified Resource Group.
 
-![template](./images/azureFunctionTen)
+![template](Images/azureFunctionTen.png)
 
 Once all of these is done, make sure to start your function app when you are ready to start migration.
 
