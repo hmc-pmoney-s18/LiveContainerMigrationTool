@@ -6,7 +6,6 @@ to achieve a high write throughput in case of huge data migration scenarios and 
 
 <summary><strong><em>Table of Contents</em></strong></summary>
 
-- [<img src="https://raw.githubusercontent.com/dennyglee/azure-cosmosdb-spark/master/docs/images/azure-cosmos-db-icon.png" width="75"> &nbsp; Azure Cosmos DB Live Container Migration for .NET Core](#img-src%22httpsrawgithubusercontentcomdennygleeazure-cosmosdb-sparkmasterdocsimagesazure-cosmos-db-iconpng%22-width%2275%22-nbsp-Azure-Cosmos-DB-Live-Container-Migration-for-NET-Core)
   - [Consuming the Microsoft Azure Cosmos DB BulkExecutor .NET library](#Consuming-the-Microsoft-Azure-Cosmos-DB-BulkExecutor-NET-library)
     - [Configuring Migration Parameters](#Configuring-Migration-Parameters)
     - [Configurable settings](#Configurable-settings)
@@ -107,14 +106,14 @@ We observe the following performance for the migration of 6.09 million (~1KB) do
 | -----------   | ----------------  | --------------------  |
 | Performance   | 42                | ~ 2400                |
 
-We also observe the following performance for the migration of 2.72 million (~1KB) documents from a 400 RU/s **one partition** Monitored Container into a 30 K RU/s Cosmos DB Target Container. The Monitored container has the same partition key as the Target Container:
+We also observe the following performance for the migration of 2.72 million (~1KB) documents from a 400 RU/s **one partition** Monitored Container into a 30 K RU/s Cosmos DB Target Container. The Monitored container has a different partition key than the Target Container:
 
 | | Time taken (min) | Average Writes/second |
 | --- | --- | --- |
-|  Performance | ~ 25 |  | ~ 1780
+|  Performance | ~ 25 | ~ 1780 |
 
-The tool works better when data is evenly distrubuted across partitions because there are no threads creating a bottleneck still writing from their heavier payloads while others are just sitting around doing nothing because their mini - batches are not as heavy. We also see a better performance when the Monitored container has a different partition key than the Target container since the Bulk Executor library can read batch from one partition key range from the change feed but write it to several partitions in the Target Container concurrently.
-
+The tool works better when data is evenly distrubuted across partitions because there are no threads creating a bottleneck, still writing from their heavier payloads while others threads are just sitting around doing nothing because their mini-batches are not as heavy. We also see a better performance when a Monitored container has a different partition key than a Target container since the Bulk Executor library can read batch from one partition key range from the change feed but write it to several partitions in the Target Container concurrently.
+The number of partition key ranges is also another that affects the performance of the migration tool. In case of huge amounts of data to be migrated, MigrationExecutorApp instances will be increased to as many as the number of partitions in the Monitored container. The increased performance results from the fact that the instance can execute in parallel.
 
 
 
@@ -134,8 +133,3 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
 To give feedback and/or report an issue, open a [GitHub
 Issue](https://help.github.com/articles/creating-an-issue/).
 
-------------------------------------------
-
-## Other relevant projects
-
-* [Cosmos DB BulkExecutor library for Java](https://github.com/Azure/azure-cosmosdb-bulkexecutor-java-getting-started)
