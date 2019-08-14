@@ -35,7 +35,7 @@ Once you  have created an Azure Function Instance, head to the *Configuration* o
 monitored container's id and database, target container's id and database, and storage queue name and connection string, **which you have to create before hand**. A storage queue is used as a post-mortem storage service in case a document write fails.
 The migration settings are exposed as environment variables and accessed by the migration application during runtime. You can learn more about Azure Function Instance configuration [here](https://docs.microsoft.com/en-us/azure/app-service/configure-common).
 
-![template](Images/azureFunctionFive)
+![template](Images/azureFunctionFive.png)
 
 ### Configurable settings
 
