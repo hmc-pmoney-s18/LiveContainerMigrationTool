@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/dennyglee/azure-cosmosdb-spark/master/docs/images/azure-cosmos-db-icon.png" width="75">  &nbsp; Azure Cosmos DB Live Container Migration for .NET Core
+<img src="Images/CosmosDBLogo.svg" width="75">  &nbsp; Azure Cosmos DB Live Container Migration for .NET Core
 ==========================================
 
 The Azure Cosmos DB Live Container Migration tool for .NET Core migrates documents from a Monitored Container to a Target Container in real-time. The tool copies data to the Target Container as It comes in the Monitored Container using [Azure Cosmos DB ChangeFeed](https://docs.microsoft.com/en-us/azure/cosmos-db/change-feed). The tool also leverages [Azure Cosmos DB Bulk Executor Library](https://docs.microsoft.com/azure/cosmos-db/bulk-executor-overview)
@@ -13,8 +13,6 @@ to achieve a high write throughput in case of huge data migration scenarios and 
     - [Deploying MigrationExecutorApp](#Deploying-MigrationExecutorApp)
   - [Performance of Cosmos DB Live Migration Tool](#Performance-of-Cosmos-DB-Live-Migration-Tool)
   - [Monitoring the Migration Progress](#Monitoring-the-Migration-Progress)
-  - [Contributing & feedback](#Contributing--feedback)
-  - [Other relevant projects](#Other-relevant-projects)
 
 </details>
 
@@ -34,7 +32,7 @@ For a better migration performace, make sure your Azure Function Instance is as 
 
 Once you  have created an Azure Function Instance, head to the *Configuration* option to configure migration settings. Migration settings include connection strings to your monitored and target containers,
 monitored container's id and database, target container's id and database, and storage queue name and connection string, **which you have to be create before deploying the migration app and starting the Azure Function Instance**. A storage queue is used as a post-mortem storage service in case a document write fails.
-The migration settings are exposed as environment variables and accessed by the migration application during runtime. You can learn more about Azure Function Instance configuration [here](https://docs.microsoft.com/en-us/azure/app-service/configure-common).
+The migration settings are exposed as environment variables and accessed by the migration application during runtime. You can learn more about Azure Function Instance configuration [here](https://docs.microsoft.com/azure/app-service/configure-common).
 
 &nbsp;
 ![template](Images/azureFunctionFive.png)
@@ -72,7 +70,7 @@ In order to scale up and allow the tool to perform optimally, navigate to your A
 ![template](/Images/azureFunctionEight.png)
 &nbsp;
 
-We recommend you to choose **S3 400 ACU** pricing tier. For more information about other pricing tiers and how they satisfty various performance needs, click [here](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/acu).
+We recommend you to choose **S3 400 ACU** pricing tier. For more information about other pricing tiers and how they satisfty various performance needs, click [here](https://docs.microsoft.com/azure/virtual-machines/windows/acu).
 
 &nbsp;
 ![template](/Images/azureFunctionSeven.png)
@@ -120,29 +118,13 @@ We also observe the following performance for the migration of 2.72 million (~1K
 | --- | --- | --- |
 |  Performance | ~ 25 | ~ 1780 |
 
-The tool works better when data is evenly distrubuted across partitions because there are no threads creating a bottleneck, still writing from their heavier payloads while others threads are just sitting around doing nothing because their mini-batches are not as heavy. We also see a better performance when a Monitored container has a different partition key than a Target container since the Bulk Executor library can read batch from one partition key range from the change feed but write it to several partitions in the Target Container concurrently.
+The tool works better when data is evenly distributed across partitions because there are no threads creating a bottleneck, still writing from their heavier payloads while others threads are just sitting around doing nothing because their mini-batches are not as heavy. We also see a better performance when a Monitored container has a different partition key than a Target container since the Bulk Executor library can read batch from one partition key range from the change feed but write it to several partitions in the Target Container concurrently.
 The number of partition key ranges is also another that affects the performance of the migration tool. In case of huge amounts of data to be migrated, MigrationExecutorApp instances will be increased to as many as the number of partitions in the Monitored container. The increased performance results from the fact that the instance can execute in parallel.
 
-
-**One very important point  is that stopping the Azure Function Instance when migration is still going on might lead to lost changefeed batches. Therefore as a rule of thumb, don't stop the Azure Function Instance once you have deployed the migration app in Azure Function Instance. There is no point in stopping it if you plan to restart again anyways since you only get charged based on the execution duration.**
+We understand that customers have not control over the Partiton Key Ranges once a container is created, but we mention the distribution of data across partitions and the number of Partition Key Ranges and how that affects the performance of the solution to give users more performace context.
 
 ## Monitoring the Progress of Migration
 
 The repository contains a console app project that can be used to monitor the progress of migration. The application displays several metrics such as the average documents write per second, current number of documents in the Monitored and Target Containers, ETA, and etc. To consume it, head to the AppSettings.json file within the project and fill out all the migration settings like you did when you configured the 
 Azure Function Instance. Once that is done, you can run the application.
-
-------------------------------------------
-## Contributing & feedback
-
-This project has adopted the [Microsoft Open Source Code of
-Conduct](https://opensource.microsoft.com/codeofconduct/).  For more information
-see the [Code of Conduct
-FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact
-[opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional
-questions or comments.
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
-
-To give feedback and/or report an issue, open a [GitHub
-Issue](https://help.github.com/articles/creating-an-issue/).
 
