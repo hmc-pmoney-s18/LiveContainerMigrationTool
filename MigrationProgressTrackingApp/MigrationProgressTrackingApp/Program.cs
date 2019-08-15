@@ -94,7 +94,7 @@ namespace MigrationProgressApp
                     double averageRate = this.totalInserted * 1.0 / totalSeconds;
                     double eta = averageRate == 0 ? 0 : (this.sourceCollectionCount - this.currentDestinationCollectionCount) * 1.0 / (averageRate * 3600);
 
-                   this.TrackMetrics(this.sourceCollectionCount, this.currentDestinationCollectionCount, currentRate, averageRate, eta);
+                    this.TrackMetrics(this.sourceCollectionCount, this.currentDestinationCollectionCount, currentRate, averageRate, eta);
 
                     this.prevDestinationCollectionCount = this.currentDestinationCollectionCount;
 

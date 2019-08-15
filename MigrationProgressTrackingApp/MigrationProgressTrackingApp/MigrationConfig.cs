@@ -9,13 +9,13 @@ namespace MigrationProgressApp
     public class MigrationConfig
     {
         public MigrationConfig(
-            string monitoredUri, 
-            string monitoredSecretKey, 
-            string monitoredDbName, 
+            string monitoredUri,
+            string monitoredSecretKey,
+            string monitoredDbName,
             string monitoredCollectionName,
-            string destUri, 
-            string destKey, 
-            string destDbName, 
+            string destUri,
+            string destKey,
+            string destDbName,
             string destCollectionName)
         {
             this.MonitoredUri = monitoredUri;
