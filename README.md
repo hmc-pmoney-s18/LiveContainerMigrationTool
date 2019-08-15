@@ -4,7 +4,7 @@
 The Azure Cosmos DB Live Container Migration tool for .NET Core migrates documents from a Monitored Container to a Target Container in real-time. The tool copies data to the Target Container as It comes in the Monitored Container using [Azure Cosmos DB ChangeFeed](https://docs.microsoft.com/en-us/azure/cosmos-db/change-feed). The tool also leverages [Azure Cosmos DB Bulk Executor Library](https://docs.microsoft.com/en-us/azure/cosmos-db/bulk-executor-overview)
 to achieve a high write throughput in case of huge data migration scenarios and [Azure Functions](https://azure.microsoft.com/en-us/services/functions/) for deployment. The tool migrates data since the beginning of time with respect to the Monitored container. As a result, the Target Container is guaranted to have all the documents that are in the Monitored container once migration is done barring any erros.
 
-<summary><strong><em>Table of Contents</em></strong></summary>
+## Table of Contents
 
   - [Consuming the Microsoft Azure Cosmos DB BulkExecutor .NET library](#Consuming-the-Microsoft-Azure-Cosmos-DB-BulkExecutor-NET-library)
     - [Configuring Migration Parameters](#Configuring-Migration-Parameters)
