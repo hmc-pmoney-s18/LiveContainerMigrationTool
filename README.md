@@ -11,13 +11,14 @@ to achieve a high write throughput in case of huge data migration scenarios and 
     - [Configurable settings](#Configurable-settings)
     - [Hosting platform instanse configuration](#Hosting-platform-instanse-configuration)
     - [Deploying MigrationExecutorApp](#Deploying-MigrationExecutorApp)
-    - [Performance of bulk import sample](#Performance-of-bulk-import-sample)
+  - [Performance of Cosmos DB Live Migration Tool](#Performance-of-Cosmos-DB-Live-Migration-Tool)
+  - [Monitoring the Migration Progress](#Monitoring-the-Migration-Progress)
   - [Contributing & feedback](#Contributing--feedback)
   - [Other relevant projects](#Other-relevant-projects)
 
 </details>
 
-## Consuming Azure Cosmos DB BulkExecutor .NET Core Live Migration Tool
+## Consuming Azure Cosmos DB .NET Core Live Migration Tool
 
 This repository includes a project that executes the migration, a migration progress project that tracts the progress and the throughput of the migration process, and a test project.
 To get started with migration, make sure you have the Target Container created. We don't check if the Monitored or Target container exists, so a wrong container id would lead to an 
@@ -94,7 +95,7 @@ Once all of these is done, make sure to start your function app when you are rea
 
 
 
-### Performance of bulk import sample
+## Performance of Cosmos DB Live Migration Tool
 
 The tool is run on Azure Function Instance in S3 400 ACU 7 GB memory pricing tier in Central US region, migrating data from a Monitored Container in Central US to a Target Container in Central US with 30K RU/s.
 
@@ -124,6 +125,11 @@ The number of partition key ranges is also another that affects the performance 
 
 
 **One very important point  is that stopping the Azure Function Instance when migration is still going on might lead to lost changefeed batches. Therefore as a rule of thumb, don't stop the Azure Function Instance once you have deployed the migration app in Azure Function Instance. There is no point in stopping it if you plan to restart again anyways since you only get charged based on the execution duration.**
+
+## Monitoring the Progress of Migration
+
+The repository contains a console app project that can be used to monitor the progress of migration. The application displays several metrics such as the average documents write per second, current number of documents in the Monitored and Target Containers, ETA, and etc. To consume it, head to the AppSettings.json file within the project and fill out all the migration settings like you did when you configured the 
+Azure Function Instance. Once that is done, you can run the application.
 
 ------------------------------------------
 ## Contributing & feedback
