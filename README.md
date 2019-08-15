@@ -58,7 +58,7 @@ After navigating to the Application Settings blade, click **New Application Sett
 ![template](/Images/azureFunctionSix.png)
 &nbsp;
 
-After adding every configurable setting with the right values, your Application Settings blade should be very similar to the image below
+After adding every configurable setting with the right value, your Application Settings blade should be very similar to the image below
 &nbsp;
 ![template](/Images/azureFunctionThree.png)
 &nbsp;
