@@ -17,14 +17,14 @@ to achieve a high write throughput in case of huge data migration scenarios and 
 
 </details>
 
-## Consuming the Microsoft Azure Cosmos DB BulkExecutor .NET library
+## Consuming Azure Cosmos DB BulkExecutor .NET Core Live Migration Tool
 
-This repository includes a project that executes the migration, a migration progress project that tracts the progress and the throuput of the migration process, and a test project.
+This repository includes a project that executes the migration, a migration progress project that tracts the progress and the throughput of the migration process, and a test project.
 To get started with migration, make sure you have the Target Container created. We don't check if the Monitored or Target container exists, so a wrong container id would lead to an 
 undefined behavior.
 
 To get started, clone the repository. In the meantime, make sure you have an Azure Function Instance created with an App Service Plan hosting plan.
-The bulk executor that the tool uses to optimize write throuput leverages concurrent writing within a partition key range so a machine with more than one core is 
+The bulk executor that the tool uses to optimize write throughput leverages concurrent writing within a partition key range so a machine with more than one core is 
 required. Since, Consumption hosting plan does not scale up, we require customers to deploy this tool in a Azure Function Instance in App Service Plan hosting plan.
 
 For a better migration performace, make sure your Azure Function Instance is as close to your Target and Monitored containers regions as possible. 
@@ -32,10 +32,12 @@ For a better migration performace, make sure your Azure Function Instance is as 
 ### Configuring Migration Parameters
 
 Once you  have created an Azure Function Instance, head to the *Configuration* option to configure migration settings. Migration settings include connection strings to your monitored and target containers,
-monitored container's id and database, target container's id and database, and storage queue name and connection string, **which you have to create before hand**. A storage queue is used as a post-mortem storage service in case a document write fails.
+monitored container's id and database, target container's id and database, and storage queue name and connection string, **which you have to be create before deploying the migration app and starting the Azure Function Instance**. A storage queue is used as a post-mortem storage service in case a document write fails.
 The migration settings are exposed as environment variables and accessed by the migration application during runtime. You can learn more about Azure Function Instance configuration [here](https://docs.microsoft.com/en-us/azure/app-service/configure-common).
 
+
 ![template](Images/azureFunctionFive.png)
+
 
 ### Configurable settings
 
@@ -49,8 +51,11 @@ The migration settings are exposed as environment variables and accessed by the 
 * *QueueName* : The name of the storage queue.
 * *QueueConnectionString* : The connection string to the storage queue.
 
-After naving to the Application Settings blade, click **New Application Settings** and add each of the above configurable settings with their appropriate values
+After navigating to the Application Settings blade, click **New Application Settings** and add each of the above configurable settings with their appropriate values
+
+
 ![template](/Images/azureFunctionSix.png)
+
 
 After adding every configurable setting with the right values, your Application Settings blade should be very similar to the image below
 
@@ -65,11 +70,13 @@ In order to scale up and allow the tool to perform optimally, navigate to your A
 
 ![template](/Images/azureFunctionEight.png)
 
+
 We recommend you to choose **S3 400 ACU** pricing tier. For more information about other pricing tiers and how they satisfty various performance needs, click [here](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/acu).
+
 
 ![template](/Images/azureFunctionSeven.png)
 
-Once you have configured Migration Application settings and the Hosting platform, you can publish the MigrationExecutorApp from the cloned repository in Azure Function Instance. If you don't want the migration to start right away, you can stop the Azure Function Instance, deploy the code from visual studio, and start the Azure Function Instance whenever you want.
+Once you have configured Migration Application settings and the hosting platform, you can publish the MigrationExecutorApp from the cloned repository in the Azure Function Instance. If you don't want the migration to start right away, you can stop the Azure Function Instance, deploy the code from visual studio, and start the Azure Function Instance whenever you want.
 
 ### Deploying MigrationExecutorApp
 
@@ -79,15 +86,15 @@ Right click on the **MigrationExecutorApp** project, then click on **Publish**.
 The rest of the steps should be straight forward and very intuitive since you have already created an Azure Function Instance that lives within some
 specified Resource Group.
 
+
 ![template](Images/azureFunctionTen.png)
+
 
 Once all of these is done, make sure to start your function app when you are ready to start migration.
 
 
 
 ### Performance of bulk import sample
-
-Let us compare the performace of the bulk import sample [application](https://github.com/Azure/azure-cosmosdb-bulkexecutor-dotnet-getting-started/blob/master/BulkImportSample/BulkImportSample/) against a [multi-threaded application](https://github.com/Azure/azure-documentdb-dotnet/tree/master/samples/documentdb-benchmark) which utilizes point writes (CreateDocumentAsync API in DocumentClient)
 
 The tool is run on Azure Function Instance in S3 400 ACU 7 GB memory pricing tier in Central US region, migrating data from a Monitored Container in Central US to a Target Container in Central US with 30K RU/s.
 
@@ -116,7 +123,7 @@ The tool works better when data is evenly distrubuted across partitions because 
 The number of partition key ranges is also another that affects the performance of the migration tool. In case of huge amounts of data to be migrated, MigrationExecutorApp instances will be increased to as many as the number of partitions in the Monitored container. The increased performance results from the fact that the instance can execute in parallel.
 
 
-
+One more important is that stopping the Azure Function Instance when migration is still going on might lead to lost changefeed batches. Therefore as a rule of thumb, don't stop the Azure Function Instance once you have deployed the migration app in Azure Function Instance. There is no point in stopping it if you plan to restart again anyways since you only get charged based on the execution duration.
 
 ------------------------------------------
 ## Contributing & feedback
