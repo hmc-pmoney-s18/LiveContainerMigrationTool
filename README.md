@@ -31,7 +31,7 @@ For a better migration performace, make sure your Azure Function Instance is as 
 ### Configuring Migration Parameters
 
 Once you  have created an Azure Function Instance, head to the *Configuration* option to configure migration settings. Migration settings include connection strings to your monitored and target containers,
-monitored container's id and database, target container's id and database, and storage queue name and connection string, **which you have to be create before deploying the migration app and starting the Azure Function Instance**. A storage queue is used as a post-mortem storage service in case a document write fails.
+monitored container's id and database, target container's id and database, and storage queue name and connection string, **which have to be created before deploying the migration app and starting the Azure Function Instance**. A storage queue is used as a post-mortem storage service in case a document write fails.
 The migration settings are exposed as environment variables and accessed by the migration application during runtime. You can learn more about Azure Function Instance configuration [here](https://docs.microsoft.com/azure/app-service/configure-common).
 
 &nbsp;
