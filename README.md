@@ -31,7 +31,7 @@ For a better migration performace, make sure your Azure Function Instance is as 
 ### Configuring Migration Parameters
 
 Once you  have created an Azure Function Instance, head to the *Configuration* option to configure migration settings. Migration settings include connection strings to your monitored and target containers,
-monitored container's id and database, target container's id and database, and storage queue name and connection string, **which you have to be create before deploying the migration app and starting the Azure Function Instance**. A storage queue is used as a post-mortem storage service in case a document write fails.
+monitored container's id and database, target container's id and database, and storage queue name and connection string, **which have to be created before deploying the migration app and starting the Azure Function Instance**. A storage queue is used as a post-mortem storage service in case a document write fails.
 The migration settings are exposed as environment variables and accessed by the migration application during runtime. You can learn more about Azure Function Instance configuration [here](https://docs.microsoft.com/azure/app-service/configure-common).
 
 &nbsp;
@@ -60,7 +60,7 @@ After adding every configurable setting with the right value, your Application S
 &nbsp;
 ![template](/Images/azureFunctionThree.png)
 &nbsp;
-### Hosting platform instanse configuration
+### Hosting platform instance configuration
 
 This Azure Cosmos DB Live Migration tool uses Azure Cosmos DB BulkExecutor library. According to Azure Cosmos DB BulkExecutor library documentation, "when a bulk import API is triggered with a batch of documents[to be migrated], on the client-side[in the Azure Function Environment in this case], they are first shuffled into buckets corresponding to their target Cosmos DB partition key range. Within each partiton key range bucket, they are broken down into mini-batches and each mini-batch of documents acts as a payload that is committed transactionally.
 We have built in optimizations for the concurrent execution of these mini-batches both within and across partition key ranges to maximally utilize the allocated collection throughput." Since this migration tool leverages Azure Cosmos DB BulkExecutor concurrent execution of documents mini-batches for a better migration performance, it is important this tool is deployed in an environment with more than one core.
