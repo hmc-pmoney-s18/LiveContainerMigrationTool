@@ -2,7 +2,7 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 //------------------------------------------------------------
 
-namespace MigrationProgressApp
+namespace MigrationProgressTrackingApp
 {
     using Microsoft.Azure.Documents;
     using Microsoft.Azure.Documents.Client;
@@ -38,12 +38,12 @@ namespace MigrationProgressApp
         public async Task RunAsync()
         {
             MigrationConfig configInstance = new MigrationConfig(
-                config["EndPoint"],
-                config["AuthKey"],
+                config["SourceEndPoint"],
+                config["SourceAuthKey"],
                 config["SourceDatabase"],
                 config["SourceCollection"],
-                config["endPoint"],
-                config["authKey"],
+                config["TargetEndPoint"],
+                config["TargetAuthKey"],
                 config["TargetDatabase"],
                 config["TargetCollection"]);
 

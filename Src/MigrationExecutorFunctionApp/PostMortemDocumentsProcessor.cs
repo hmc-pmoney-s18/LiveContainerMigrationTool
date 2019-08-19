@@ -21,7 +21,7 @@ namespace MigrationExecutorFunctionApp
          
         [FunctionName("PostMortemDocumentsProcessor")]
         public async Task Run(
-            [CosmosDB("%TargetDatabase%", "%TargetCollection%", ConnectionStringSetting = "CosmosDB")]IDocumentClient client,
+            [CosmosDB("%TargetDatabase%", "%TargetCollection%", ConnectionStringSetting = "TargetCosmosDB")]IDocumentClient client,
             [QueueTrigger("%QueueName%", Connection = "QueueConnectionString")]Document myQueueItem, 
             ILogger log)
         {

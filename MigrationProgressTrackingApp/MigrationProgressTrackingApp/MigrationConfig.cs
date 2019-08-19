@@ -2,7 +2,7 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 //------------------------------------------------------------
 
-namespace MigrationProgressApp
+namespace MigrationProgressTrackingApp
 {
     using Newtonsoft.Json;
 

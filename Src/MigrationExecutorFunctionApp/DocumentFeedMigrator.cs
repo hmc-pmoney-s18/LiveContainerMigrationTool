@@ -29,7 +29,7 @@ namespace MigrationExecutorFunctionApp
             [CosmosDBTrigger(
             databaseName: "%SourceDatabase%",
             collectionName: "%SourceCollection%",
-            ConnectionStringSetting = "CosmosDB",
+            ConnectionStringSetting = "SourceCosmosDB",
             LeaseCollectionName = "leases",
             StartFromBeginning = true,
             MaxItemsPerInvocation = 10000000,
@@ -77,7 +77,7 @@ namespace MigrationExecutorFunctionApp
                 },
                 cancellationToken));
 
-                Task.WaitAll(tasks.ToArray());
+                await Task.WhenAll(tasks);
 
                 log.LogMetric("The Number of Documents Imported", bulkImportResponse.NumberOfDocumentsImported);
                 log.LogMetric("The Total Number of RU/s consumed", bulkImportResponse.TotalRequestUnitsConsumed);

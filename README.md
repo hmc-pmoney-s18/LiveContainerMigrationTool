@@ -70,7 +70,7 @@ In order to scale up and allow the tool to perform optimally, navigate to your A
 ![template](/Images/azureFunctionEight.png)
 &nbsp;
 
-We recommend you to choose **S3 400 ACU** pricing tier. For more information about other pricing tiers and how they satisfty various performance needs, click [here](https://docs.microsoft.com/azure/virtual-machines/windows/acu).
+Availability of computing resources impact the speed of migration. For most common scenarios, we recommend you to choose **S3 400 ACU** pricing tier. For more information about other pricing tiers and how they satisfty various performance needs, click [here](https://docs.microsoft.com/azure/virtual-machines/windows/acu).
 
 &nbsp;
 ![template](/Images/azureFunctionSeven.png)
@@ -79,7 +79,7 @@ Once you have configured Migration Application settings and the hosting platform
 
 ### Deploying MigrationExecutorApp
 
-If you have visual studio 2017 and have cloned the repository, deploying the MigrationExecutorApp should be easy and straight forward.
+If you have [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/) and have cloned the repository, deploying the MigrationExecutorApp should be easy and straight forward.
 Right click on the **MigrationExecutorApp** project, then click on **Publish**. 
 
 The rest of the steps should be straight forward and very intuitive since you have already created an Azure Function Instance that lives within some
@@ -118,10 +118,10 @@ We also observe the following performance for the migration of 2.72 million (~1K
 | --- | --- | --- |
 |  Performance | ~ 25 | ~ 1780 |
 
-The tool works better when data is evenly distributed across partitions because there are no threads creating a bottleneck, still writing from their heavier payloads while others threads are just sitting around doing nothing because their mini-batches are not as heavy. We also see a better performance when a Monitored container has a different partition key than a Target container since the Bulk Executor library can read batch from one partition key range from the change feed but write it to several partitions in the Target Container concurrently.
-The number of partition key ranges is also another that affects the performance of the migration tool. In case of huge amounts of data to be migrated, MigrationExecutorApp instances will be increased to as many as the number of partitions in the Monitored container. The increased performance results from the fact that the instance can execute in parallel.
+The tool works better when data is evenly distributed across partitions because there are no threads creating a bottleneck, still writing from their heavier payloads while other threads are just sitting around doing nothing because their mini-batches are not as heavy. We also see a better performance when a Monitored  Container has a different partition key than a Target Container since the Bulk Executor library can read a one partition key range batch from the change feed but write it to several partitions in the Target Container concurrently.
+The number of partition key ranges is also another variable that affects the performance of the migration tool. In case of huge amounts of data to be migrated, MigrationExecutorApp instances will be increased to as many as the number of partitions in the Monitored Container. The increased performance results from the fact that the instances can execute in parallel.
 
-We understand that customers have not control over the Partiton Key Ranges once a container is created, but we mention the distribution of data across partitions and the number of Partition Key Ranges and how that affects the performance of the solution to give users more performace context.
+We understand that customers have no control over the Partiton Key Ranges once a container is created, but we mention the distribution of data across partitions and the number of Partition Key Ranges and how that affects the performance of the solution to give users more performace context.
 
 ## Monitoring the Progress of Migration
 
