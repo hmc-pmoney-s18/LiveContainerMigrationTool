@@ -36,6 +36,7 @@ namespace MigrationExecutorFunctionApp
 
             bulkExecutor.InitializeAsync().GetAwaiter().GetResult();
 
+            // Set retry options to 0 to pass congestion control to bulk executor.
             client.ConnectionPolicy.RetryOptions.MaxRetryAttemptsOnThrottledRequests = 0;
             client.ConnectionPolicy.RetryOptions.MaxRetryWaitTimeInSeconds = 0;
 
