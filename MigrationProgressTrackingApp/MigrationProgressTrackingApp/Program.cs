@@ -14,7 +14,7 @@ namespace MigrationProgressTrackingApp
 
     public class Program
     {
-        const int SleepTime = 13000;
+        const int SleepTime = 10000;
 
         private static DateTime start = DateTime.Now;
         private static IConfigurationRoot config = new ConfigurationBuilder()
@@ -50,7 +50,7 @@ namespace MigrationProgressTrackingApp
             while (true)
             {
                 await this.TrackMigrationProgressAsync(configInstance);
-                await Task.Delay(10000);
+                await Task.Delay(SleepTime);
             }
         }
 
