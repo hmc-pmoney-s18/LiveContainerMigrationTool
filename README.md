@@ -18,7 +18,7 @@ to achieve a high write throughput in case of huge data migration scenarios and 
 
 ## Consuming Azure Cosmos DB .NET Core Live Migration Tool
 
-This repository includes a [project that executes the migration](Src/MigrationExecutorFunctionApp/MigrationExecutorFunctionApp.csproj), a [project that tracks the progress](MigrationProgressTrackingApp/MigrationProgressTrackingApp.csproj) and the throughput of the migration process, and a [test project](Src/MigrationExecutorUnitTests/MigrationExecutorUnitTests.csproj ).
+This repository includes a [project that executes the migration](Src/MigrationExecutorFunctionApp/MigrationExecutorFunctionApp.csproj), a [project that tracks the progress](MigrationProgressTrackingApp/MigrationProgressTrackingApp/MigrationProgressTrackingApp.csproj) and the throughput of the migration process, and a [test project](Src/MigrationExecutorUnitTests/MigrationExecutorUnitTests.csproj ).
 To get started with migration, make sure you have the Target Container created. We don't check if the Monitored or Target container exists, so a wrong container id would lead to an 
 undefined behavior.
 
